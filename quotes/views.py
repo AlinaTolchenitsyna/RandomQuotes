@@ -9,6 +9,8 @@ from .utils import choose_weighted_quote
 from .models import Source
 from .forms import AddQuoteForm
 from django.db.models import Sum, Avg, Count
+from django.utils import timezone
+from datetime import timedelta
 
 
 def add_quote(request):
