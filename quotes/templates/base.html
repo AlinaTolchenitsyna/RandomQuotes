@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Цитаты{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid align-items-center">
+        <a class="navbar-brand" href="/">🎬 Цитаты</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto mb-0"> <!-- убираем mb-2 -->
+            <li class="nav-item"><a class="nav-link" href="{% url 'add_quote' %}">Добавить цитату</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'top_quotes' %}">Топ-10</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Дашборд</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <main class="container mt-4">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

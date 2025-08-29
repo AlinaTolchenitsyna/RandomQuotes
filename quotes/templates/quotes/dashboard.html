@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Дашборд{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">Дашборд</h1>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card p-3">
+        <h6 class="mb-0">Всего цитат</h6>
+        <p class="display-6 mb-0">{{ total_quotes }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <h6 class="mb-0">Всего лайков</h6>
+        <p class="display-6 mb-0">{{ total_likes }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <h6 class="mb-0">Всего просмотров</h6>
+        <p class="display-6 mb-0">{{ total_views }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3">
+        <h6 class="mb-0">Средний вес</h6>
+        <p class="display-6 mb-0">{{ avg_weight }}</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="mb-3">Топ источников по лайкам</h3>
+  {% if top_sources %}
+    <div class="list-group">
+      {% for s in top_sources %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ s.name }}</strong>
+            <div><small class="text-muted">Цитат: {{ s.num_quotes }}</small></div>
+          </div>
+          <div class="text-end">
+            <div class="fw-bold">{{ s.sum_likes|default:0 }} 👍</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">Нет данных по источникам.</div>
+  {% endif %}
+{% endblock %}

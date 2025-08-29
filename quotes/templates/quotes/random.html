@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Случайная цитата{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">Случайная цитата</h1>
+
+  {% if not quote %}
+    <div class="alert alert-warning">
+      Пока нет ни одной цитаты. <a href="/quotes/add/">Добавь первую</a> 🙂
+    </div>
+  {% else %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <figure>
+          <blockquote class="blockquote">
+            <p class="mb-0">{{ quote.text }}</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            {{ quote.source.name }}
+            <span class="text-muted">({{ quote.source.get_kind_display }})</span>
+          </figcaption>
+        </figure>
+
+        <div class="d-flex align-items-center gap-3 mt-3">
+          <span class="badge text-bg-secondary">Просмотры: {{ quote.views }}</span>
+          <span class="badge text-bg-success">Лайки: {{ quote.likes }}</span>
+          <span class="badge text-bg-danger">Дизлайки: {{ quote.dislikes }}</span>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <form method="post" action="{% url 'like_quote' quote.id %}">
+            {% csrf_token %}
+            <button 
+                class="btn {% if vote_type == 'like' %}btn-success{% else %}btn-outline-success{% endif %}" 
+                title="Нравится">
+              👍 Лайк
+            </button>
+          </form>
+
+          <form method="post" action="{% url 'dislike_quote' quote.id %}">
+            {% csrf_token %}
+            <button 
+                class="btn {% if vote_type == 'dislike' %}btn-danger{% else %}btn-outline-danger{% endif %}" 
+                title="Не нравится">
+              👎 Дизлайк
+            </button>
+          </form>
+
+
+          <a href="/" class="btn btn-primary ms-auto" title="Показать другую цитату">
+            ↻ Ещё цитату
+          </a>
+        </div>
+
+        {% if voted %}
+          <p class="text-muted mt-2 mb-0">Вы уже голосовали за эту цитату в текущей сессии.</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
