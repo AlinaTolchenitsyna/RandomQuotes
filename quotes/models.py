@@ -26,7 +26,9 @@ class Source(models.Model):
 
 
 class Quote(models.Model):
-    text = models.TextField("Текст цитаты", unique=True)
+    text = models.TextField("Текст цитаты", unique=True, error_messages={
+        "unique": "Такая цитата уже есть в базе.",
+    },)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="quotes", verbose_name="Источник")
 
     weight = models.PositiveIntegerField("Вес (≥1)", default=1, validators=[MinValueValidator(1)])
@@ -52,7 +54,9 @@ class Quote(models.Model):
             # Подсчет цитат у источника (должно быть не больше 3), за исключением текущей (если она редактируется, а не добавляется)
             existing_count = Quote.objects.filter(source_id=self.source_id).exclude(pk=self.pk).count()
             if existing_count >= 3:
-                raise ValidationError({"source": "У этого источника уже есть 3 цитаты. Нельзя добавить больше."})
+                raise ValidationError({
+                    "source": f"У источника «{self.source}» уже есть 3 цитаты. Нельзя добавить больше."
+                })
 
     def save(self, *args, **kwargs):
         self.full_clean() # валидация на уровне Django

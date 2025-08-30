@@ -20,8 +20,6 @@ def add_quote(request):
             form.save()
             messages.success(request, "Цитата успешно добавлена!")
             return redirect("add_quote")  
-        else:
-            messages.error(request, "Исправьте ошибки в форме.")
     else:
         form = AddQuoteForm()
 
